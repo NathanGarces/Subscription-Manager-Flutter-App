@@ -8,8 +8,10 @@ class DynamicSize {
   static double _designWidth = 411;
 
   //Device sizes
-  static double _deviceHeight;
-  static double _deviceWidth;
+  static double deviceHeight;
+  static double deviceWidth;
+  static double _availableHeight;
+  static double _avilableWidth;
 
   //Size Ratios
   static double widthFactor;
@@ -17,14 +19,14 @@ class DynamicSize {
 
   void init(BuildContext context) {
     _mediaQuery = MediaQuery.of(context);
-    _deviceHeight = _mediaQuery.size.height -
-        _mediaQuery.padding.top -
-        _mediaQuery.padding.bottom;
-    _deviceWidth = _mediaQuery.size.width -
-        _mediaQuery.padding.left -
-        _mediaQuery.padding.right;
+    deviceHeight = _mediaQuery.size.height;
+    _availableHeight =
+        deviceHeight - _mediaQuery.padding.top - _mediaQuery.padding.bottom;
+    deviceWidth = _mediaQuery.size.width;
+    _avilableWidth =
+        deviceWidth - _mediaQuery.padding.left - _mediaQuery.padding.right;
 
-    heightFactor = _deviceHeight / _designHeight;
-    widthFactor = _deviceWidth / _designWidth;
+    heightFactor = _availableHeight / _designHeight;
+    widthFactor = _avilableWidth / _designWidth;
   }
 }

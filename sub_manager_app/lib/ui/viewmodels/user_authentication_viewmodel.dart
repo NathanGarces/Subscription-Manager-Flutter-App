@@ -31,13 +31,8 @@ class UserAuthenticationViewModel extends BaseViewModel {
   //Auth States (Used to swop between sign in and sign up)
   AuthenticationType _authenticationType = AuthenticationType.signup;
   AuthenticationType get authenticationType => _authenticationType;
-  void changeAuthenticationType() {
-    if (_authenticationType == AuthenticationType.signin) {
-      _authenticationType = AuthenticationType.signup;
-    } else {
-      _authenticationType = AuthenticationType.signin;
-    }
-
+  void setAuthenticationType(AuthenticationType type) {
+    _authenticationType = type;
     notifyListeners();
   }
 

@@ -2,11 +2,13 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:sub_manager_app/app/locator.dart';
 import 'package:sub_manager_app/services/icon_service.dart';
+import 'package:sub_manager_app/services/validation_service.dart';
 
 class UserAuthenticationViewModel extends BaseViewModel {
   //Services
   final NavigationService _navigationService = locator<NavigationService>();
   final IconService _iconService = locator<IconService>();
+  final ValidationService _validationService = locator<ValidationService>();
 
   //UI Strings
   String _title = 'SubManager';
@@ -50,7 +52,6 @@ class UserAuthenticationViewModel extends BaseViewModel {
   String get enteredEmail => _enteredEmail;
   void setEnteredEmail(String input) {
     _enteredEmail = input;
-    notifyListeners();
   }
 
   //Password
@@ -58,15 +59,13 @@ class UserAuthenticationViewModel extends BaseViewModel {
   String get enteredPassword => _enteredPassword;
   void setEnteredPassword(String input) {
     _enteredPassword = input;
-    notifyListeners();
   }
 
   //Confirm Password (Only for sign-up)
   String _enteredConfirmPassword = '';
-  String get enteredConfirmPassword => _enteredPassword;
+  String get enteredConfirmPassword => _enteredConfirmPassword;
   void setEnteredConfirmPassword(String input) {
     _enteredConfirmPassword = input;
-    notifyListeners();
   }
 
   //Constructor for logopath value.
@@ -75,7 +74,24 @@ class UserAuthenticationViewModel extends BaseViewModel {
   }
 
   //Validate and Set any errors on form submission.
+  void validateAuthInput() {
+    //Validate each field.
+    _emailError = _validationService.validateEmail(enteredEmail);
+    _passwordError = _validationService.validatePassword(enteredPassword);
 
+    if (_authenticationType == AuthenticationType.signup) {
+      _confirmPasswordError = _validationService.validatePasswords(
+          enteredPassword, enteredConfirmPassword);
+    }
+
+    notifyListeners();
+  }
+
+  void submitButton() {
+    validateAuthInput();
+
+    print("Pressed");
+  }
 }
 
 enum AuthenticationType { signin, signup }

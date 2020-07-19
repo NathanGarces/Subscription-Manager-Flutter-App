@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:stacked/stacked.dart';
 import 'package:stacked_hooks/stacked_hooks.dart';
 import 'package:sub_manager_app/app/app_theme.dart';
 import 'package:sub_manager_app/app/dynamic_size.dart';
@@ -24,7 +25,7 @@ class AuthForm extends HookViewModelWidget<UserAuthenticationViewModel> {
       width: 380 * DynamicSize.widthFactor,
       height: (viewModel.authenticationType == AuthenticationType.signup)
           ? 420 * DynamicSize.heightFactor
-          : 330 * DynamicSize.heightFactor,
+          : 315 * DynamicSize.heightFactor,
       decoration: BoxDecoration(
           color: AppTheme.backgroundConstrastColor,
           borderRadius: BorderRadius.circular(20.0),
@@ -46,6 +47,7 @@ class AuthForm extends HookViewModelWidget<UserAuthenticationViewModel> {
               _AuthInputField(
                   title: viewModel.emailTitle,
                   controller: emailController,
+                  updateFieldVar: viewModel.setEnteredEmail,
                   errorText: viewModel.emailError),
               SizedBox(
                 height: 20 * DynamicSize.heightFactor,
@@ -53,17 +55,24 @@ class AuthForm extends HookViewModelWidget<UserAuthenticationViewModel> {
               _AuthInputField(
                 title: viewModel.passwordTitle,
                 controller: passwordController,
+                updateFieldVar: viewModel.setEnteredPassword,
                 errorText: viewModel.passwordError,
               ),
-              SizedBox(
-                height: 20 * DynamicSize.heightFactor,
-              ),
+              if (viewModel.authenticationType == AuthenticationType.signup)
+                SizedBox(
+                  height: 20 * DynamicSize.heightFactor,
+                ),
               if (viewModel.authenticationType == AuthenticationType.signup)
                 _AuthInputField(
                   title: viewModel.confirmPasswordTitle,
                   controller: confirmPasswordController,
+                  updateFieldVar: viewModel.setEnteredConfirmPassword,
                   errorText: viewModel.confirmPasswordError,
-                )
+                ),
+              SizedBox(
+                height: 20 * DynamicSize.heightFactor,
+              ),
+              _AuthConfirmButton()
             ],
           ),
         ),
@@ -76,18 +85,19 @@ class _AuthInputField extends StatelessWidget {
   //Class States
   final String title;
   final TextEditingController controller;
+  final Function updateFieldVar;
   final String errorText;
 
   _AuthInputField(
       {@required this.title,
       @required this.controller,
-      @required this.errorText});
+      @required this.errorText,
+      @required this.updateFieldVar});
 
   @override
   Widget build(BuildContext context) {
     //Runtime Variables
     DynamicSize().init(context);
-    var temp = AppTheme.p2;
 
     return Container(
       width: 320 * DynamicSize.widthFactor,
@@ -105,6 +115,7 @@ class _AuthInputField extends StatelessWidget {
             height: 40 * DynamicSize.heightFactor,
             child: TextFormField(
               controller: this.controller,
+              onChanged: updateFieldVar(controller.value.text),
               cursorColor: AppTheme.secondaryColor,
               maxLines: 1,
               style: AppTheme.p1.copyWith(fontWeight: FontWeight.normal),
@@ -131,6 +142,32 @@ class _AuthInputField extends StatelessWidget {
                   ),
                 ),
         ],
+      ),
+    );
+  }
+}
+
+class _AuthConfirmButton extends ViewModelWidget<UserAuthenticationViewModel> {
+  @override
+  Widget build(BuildContext context, viewModel) {
+    //Runtime Variables
+    DynamicSize().init(context);
+    var text = (viewModel.authenticationType == AuthenticationType.signup)
+        ? viewModel.signup
+        : viewModel.signin;
+
+    return Container(
+      width: 320 * DynamicSize.widthFactor,
+      height: 44 * DynamicSize.heightFactor,
+      child: FlatButton(
+        color: AppTheme.accentColor,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10.0))),
+        onPressed: viewModel.submitButton,
+        child: Text(
+          text,
+          style: AppTheme.h2,
+        ),
       ),
     );
   }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:stacked/stacked.dart';
 import 'package:sub_manager_app/app/app_theme.dart';
 import 'package:sub_manager_app/app/dynamic_size.dart';
@@ -18,11 +17,28 @@ class UserAuthenticationView extends StatelessWidget {
     return ViewModelBuilder.reactive(
         builder: (context, viewModel, child) => Scaffold(
               backgroundColor: AppTheme.backgroundColor,
+              resizeToAvoidBottomInset: false,
               body: Container(
                 width: DynamicSize.deviceWidth,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [AuthHeader(), AuthForm()],
+                height: DynamicSize.deviceHeight,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Positioned(top: 0, child: AuthHeader()),
+                    Positioned(
+                        left: 15 * DynamicSize.widthFactor,
+                        right: 15 * DynamicSize.widthFactor,
+                        top: 230 * DynamicSize.heightFactor,
+                        child: AuthForm()),
+                    Align(
+                      alignment: Alignment.bottomCenter,
+                      child: Text(
+                        "Terms and conditions apply.",
+                        style:
+                            AppTheme.p2.copyWith(color: AppTheme.accentColor),
+                      ),
+                    )
+                  ],
                 ),
               ),
             ),

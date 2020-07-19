@@ -14,7 +14,7 @@ class AuthHeader extends ViewModelWidget<UserAuthenticationViewModel> {
     DynamicSize().init(context);
 
     return Container(
-      height: 270 * DynamicSize.heightFactor,
+      height: 300 * DynamicSize.heightFactor,
       width: DynamicSize.deviceWidth,
       decoration: BoxDecoration(gradient: AppTheme.gradient),
       child: Column(
@@ -25,8 +25,8 @@ class AuthHeader extends ViewModelWidget<UserAuthenticationViewModel> {
           SizedBox(height: 8 * DynamicSize.heightFactor),
           SvgPicture.asset(
             viewModel.logoPath,
-            width: 100 * DynamicSize.widthFactor,
-            height: 100 * DynamicSize.heightFactor,
+            width: 120 * DynamicSize.widthFactor,
+            height: 120 * DynamicSize.heightFactor,
           ),
           SizedBox(
             height: 10 * DynamicSize.heightFactor,

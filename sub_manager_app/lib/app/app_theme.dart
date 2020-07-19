@@ -4,10 +4,11 @@ import 'package:google_fonts/google_fonts.dart';
 class AppTheme {
   //Theme Colors
   static const backgroundColor = Color(0xFFFBFBFB);
-  static const backgroundConstractColor = Color(0xFFFFFFFF);
+  static const backgroundConstrastColor = Color(0xFFFFFFFF);
   static const primaryColor = Color(0xFFFFFFFF);
   static const secondaryColor = Color(0xFF5A5A5A);
   static const accentColor = Color(0xFF5507E0);
+  static const shadowColor = Colors.black26;
 
   //Gradient
   static const gradientColorOne = Color(0xFF8E2DE2);

@@ -21,7 +21,7 @@ class AuthHeader extends ViewModelWidget<UserAuthenticationViewModel> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           SizedBox(height: 25 * DynamicSize.heightFactor),
-          Text(viewModel.title, style: AppTheme.h1),
+          //Text(viewModel.title, style: AppTheme.h1), Leaving the title out for now because it seems awkward.
           SizedBox(height: 8 * DynamicSize.heightFactor),
           SvgPicture.asset(
             viewModel.logoPath,
@@ -78,7 +78,7 @@ class _AuthChoiceButton extends ViewModelWidget<UserAuthenticationViewModel> {
                   width: 100 * DynamicSize.widthFactor,
                   height: 4 * DynamicSize.heightFactor,
                   decoration: BoxDecoration(
-                      color: AppTheme.backgroundColor,
+                      color: AppTheme.primaryColor,
                       borderRadius: BorderRadius.all(Radius.circular(100.0))),
                 )
               ],

@@ -20,9 +20,17 @@ class UserAuthenticationViewModel extends BaseViewModel {
   String _emailTitle = 'Email';
   String get emailTitle => _emailTitle;
   String _passwordTitle = 'Password';
-  String get password => _passwordTitle;
+  String get passwordTitle => _passwordTitle;
   String _confirmPasswordTitle = 'Confirm Passowrd';
   String get confirmPasswordTitle => _confirmPasswordTitle;
+
+  //FORM ERROR STRINGS
+  String _emailError = '';
+  String get emailError => _emailError;
+  String _passwordError = '';
+  String get passwordError => _passwordError;
+  String _confirmPasswordError = '';
+  String get confirmPasswordError => _confirmPasswordError;
 
   //UI ICONS
   String _logoPath;
@@ -65,6 +73,9 @@ class UserAuthenticationViewModel extends BaseViewModel {
   UserAuthenticationViewModel() : super() {
     _logoPath = _iconService.imageUri(ProjectIcon.logo);
   }
+
+  //Validate and Set any errors on form submission.
+
 }
 
 enum AuthenticationType { signin, signup }

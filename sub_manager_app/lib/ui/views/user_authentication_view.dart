@@ -4,6 +4,7 @@ import 'package:stacked/stacked.dart';
 import 'package:sub_manager_app/app/app_theme.dart';
 import 'package:sub_manager_app/app/dynamic_size.dart';
 import 'package:sub_manager_app/ui/viewmodels/user_authentication_viewmodel.dart';
+import 'package:sub_manager_app/widgets/auth_form.dart';
 import 'package:sub_manager_app/widgets/auth_header_bar.dart';
 
 class UserAuthenticationView extends StatelessWidget {
@@ -16,12 +17,12 @@ class UserAuthenticationView extends StatelessWidget {
 
     return ViewModelBuilder.reactive(
         builder: (context, viewModel, child) => Scaffold(
-              backgroundColor: AppTheme.secondaryColor,
+              backgroundColor: AppTheme.backgroundColor,
               body: Container(
                 width: DynamicSize.deviceWidth,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [AuthHeader()],
+                  children: [AuthHeader(), AuthForm()],
                 ),
               ),
             ),

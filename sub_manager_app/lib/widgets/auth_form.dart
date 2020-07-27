@@ -20,6 +20,9 @@ class AuthForm extends HookViewModelWidget<UserAuthenticationViewModel> {
     var emailController = useTextEditingController();
     var passwordController = useTextEditingController();
     var confirmPasswordController = useTextEditingController();
+    var focusNodeEmail = useFocusNode();
+    var focusNodePassword = useFocusNode();
+    var focusNodeConfirmPassword = useFocusNode();
 
     return Container(
       width: 380 * DynamicSize.widthFactor,
@@ -40,15 +43,21 @@ class AuthForm extends HookViewModelWidget<UserAuthenticationViewModel> {
         child: Container(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(
-                height: 30 * DynamicSize.heightFactor,
-              ),
               _AuthInputField(
-                  title: viewModel.emailTitle,
-                  controller: emailController,
-                  updateFieldVar: viewModel.setEnteredEmail,
-                  errorText: viewModel.emailError),
+                title: viewModel.emailTitle,
+                controller: emailController,
+                updateFieldVar: viewModel.setEnteredEmail,
+                errorText: viewModel.emailError,
+                focusNode: null,
+                isFirstField: true,
+                isLastField: false,
+                onFieldSubmitted: (_) {
+                  focusNodeEmail.unfocus();
+                  FocusScope.of(context).requestFocus(focusNodePassword);
+                },
+              ),
               SizedBox(
                 height: 20 * DynamicSize.heightFactor,
               ),
@@ -57,6 +66,23 @@ class AuthForm extends HookViewModelWidget<UserAuthenticationViewModel> {
                 controller: passwordController,
                 updateFieldVar: viewModel.setEnteredPassword,
                 errorText: viewModel.passwordError,
+                focusNode: focusNodePassword,
+                isFirstField: false,
+                isLastField:
+                    (viewModel.authenticationType == AuthenticationType.signup)
+                        ? false
+                        : true,
+                onFieldSubmitted: (_) {
+                  focusNodePassword.unfocus();
+                  if (viewModel.authenticationType ==
+                      AuthenticationType.signup) {
+                    FocusScope.of(context)
+                        .requestFocus(focusNodeConfirmPassword);
+                  } else {
+                    focusNodePassword.unfocus();
+                    viewModel.submitAuthRequest();
+                  }
+                },
               ),
               if (viewModel.authenticationType == AuthenticationType.signup)
                 SizedBox(
@@ -68,6 +94,13 @@ class AuthForm extends HookViewModelWidget<UserAuthenticationViewModel> {
                   controller: confirmPasswordController,
                   updateFieldVar: viewModel.setEnteredConfirmPassword,
                   errorText: viewModel.confirmPasswordError,
+                  focusNode: focusNodeConfirmPassword,
+                  isFirstField: false,
+                  isLastField: true,
+                  onFieldSubmitted: (_) {
+                    focusNodeConfirmPassword.unfocus();
+                    viewModel.submitAuthRequest();
+                  },
                 ),
               SizedBox(
                 height: 20 * DynamicSize.heightFactor,
@@ -87,12 +120,20 @@ class _AuthInputField extends StatelessWidget {
   final TextEditingController controller;
   final Function updateFieldVar;
   final String errorText;
+  final bool isFirstField;
+  final bool isLastField;
+  final FocusNode focusNode;
+  final Function onFieldSubmitted;
 
   _AuthInputField(
       {@required this.title,
       @required this.controller,
       @required this.errorText,
-      @required this.updateFieldVar});
+      @required this.updateFieldVar,
+      @required this.isFirstField,
+      @required this.isLastField,
+      @required this.focusNode,
+      @required this.onFieldSubmitted});
 
   @override
   Widget build(BuildContext context) {
@@ -115,6 +156,10 @@ class _AuthInputField extends StatelessWidget {
             height: 40 * DynamicSize.heightFactor,
             child: TextFormField(
               controller: this.controller,
+              focusNode: focusNode,
+              onFieldSubmitted: onFieldSubmitted,
+              textInputAction:
+                  (isLastField) ? TextInputAction.done : TextInputAction.go,
               onChanged: updateFieldVar(controller.value.text),
               cursorColor: AppTheme.secondaryColor,
               maxLines: 1,
@@ -163,7 +208,7 @@ class _AuthConfirmButton extends ViewModelWidget<UserAuthenticationViewModel> {
         color: AppTheme.accentColor,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0))),
-        onPressed: viewModel.submitButton,
+        onPressed: viewModel.submitAuthRequest,
         child: Text(
           text,
           style: AppTheme.h2,

@@ -25,7 +25,7 @@ class AuthHeader extends ViewModelWidget<UserAuthenticationViewModel> {
           SizedBox(height: 8 * DynamicSize.heightFactor),
           SvgPicture.asset(
             viewModel.logoPath,
-            width: 120 * DynamicSize.widthFactor,
+            width: 120 * DynamicSize.heightFactor,
             height: 120 * DynamicSize.heightFactor,
           ),
           SizedBox(

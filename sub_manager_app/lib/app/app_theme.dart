@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'dynamic_size.dart';
 
 class AppTheme {
   //Theme Colors
@@ -21,12 +22,20 @@ class AppTheme {
   //Theme TextStyles
   //Headings
   static TextStyle h1 = GoogleFonts.roboto(
-      fontSize: 24, color: primaryColor, fontWeight: FontWeight.w300);
+      fontSize: 24 * DynamicSize.heightFactor,
+      color: primaryColor,
+      fontWeight: FontWeight.w300);
   static TextStyle h2 = GoogleFonts.roboto(
-      fontSize: 18, color: primaryColor, fontWeight: FontWeight.w300);
+      fontSize: 18 * DynamicSize.heightFactor,
+      color: primaryColor,
+      fontWeight: FontWeight.w300);
   //Body Text
   static TextStyle p1 = GoogleFonts.roboto(
-      fontSize: 14, color: secondaryColor, fontWeight: FontWeight.w300);
+      fontSize: 14 * DynamicSize.heightFactor,
+      color: secondaryColor,
+      fontWeight: FontWeight.w300);
   static TextStyle p2 = GoogleFonts.roboto(
-      fontSize: 12, color: accentColor, fontWeight: FontWeight.w300);
+      fontSize: 12 * DynamicSize.heightFactor,
+      color: secondaryColor,
+      fontWeight: FontWeight.w300);
 }

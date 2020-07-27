@@ -87,7 +87,7 @@ class UserAuthenticationViewModel extends BaseViewModel {
     notifyListeners();
   }
 
-  void submitButton() {
+  void submitAuthRequest() {
     validateAuthInput();
 
     print("Pressed");

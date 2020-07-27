@@ -16,7 +16,7 @@ class UserAuthenticationView extends HookWidget {
     DynamicSize().init(context);
     bool isKeyboardVisible = (MediaQuery.of(context).viewInsets.bottom >= 150);
 
-    //Used to animate the form based on whether the keyboard is visible or not.
+    //Used to animate the form upwards when the keyboad is visible and downwards when not.
     double formTopPosition = (isKeyboardVisible)
         ? 80 * DynamicSize.heightFactor
         : 230 * DynamicSize.heightFactor;

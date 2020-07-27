@@ -160,7 +160,7 @@ class _AuthInputField extends StatelessWidget {
               onFieldSubmitted: onFieldSubmitted,
               textInputAction:
                   (isLastField) ? TextInputAction.done : TextInputAction.go,
-              onChanged: updateFieldVar(controller.value.text),
+              onChanged: (_) => updateFieldVar(controller.value.text),
               cursorColor: AppTheme.secondaryColor,
               maxLines: 1,
               style: AppTheme.p1.copyWith(fontWeight: FontWeight.normal),
@@ -208,7 +208,7 @@ class _AuthConfirmButton extends ViewModelWidget<UserAuthenticationViewModel> {
         color: AppTheme.accentColor,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0))),
-        onPressed: viewModel.submitAuthRequest,
+        onPressed: () {},
         child: Text(
           text,
           style: AppTheme.h2,

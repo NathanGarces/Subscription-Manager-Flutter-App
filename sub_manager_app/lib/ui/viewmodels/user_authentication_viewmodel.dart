@@ -56,7 +56,7 @@ class UserAuthenticationViewModel extends BaseViewModel {
   String _enteredEmail = '';
   String get enteredEmail => _enteredEmail;
   void setEnteredEmail(String input) {
-    _enteredEmail = input;
+    _enteredEmail = input.trim();
     notifyListeners();
   }
 
@@ -64,7 +64,7 @@ class UserAuthenticationViewModel extends BaseViewModel {
   String _enteredPassword = '';
   String get enteredPassword => _enteredPassword;
   void setEnteredPassword(String input) {
-    _enteredPassword = input;
+    _enteredPassword = input.trim();
     notifyListeners();
   }
 
@@ -72,7 +72,7 @@ class UserAuthenticationViewModel extends BaseViewModel {
   String _enteredConfirmPassword = '';
   String get enteredConfirmPassword => _enteredConfirmPassword;
   void setEnteredConfirmPassword(String input) {
-    _enteredConfirmPassword = input;
+    _enteredConfirmPassword = input.trim();
     notifyListeners();
   }
 
@@ -107,19 +107,26 @@ class UserAuthenticationViewModel extends BaseViewModel {
 
   //Called when the submit button is clicked or keyboard submit is pressed.
   Future<void> submitAuthRequest() async {
-    print("Pressed");
+    print("Email: $_enteredEmail Password: $_enteredPassword");
     //Check for input errors first
     if (!validateAuthInput()) {
+      //Set the currrent modal state to busy
+      setBusy(true);
+
+      // TODO: Add error checks.
       if (_authenticationType == AuthenticationType.signin) {
         _authService
-            .signIn(_enteredEmail, _enteredPassword)
-            .then((value) => _navigationService.navigateTo(Routes.homeView));
+            .signIn(_enteredEmail.trim(), _enteredPassword.trim())
+            .then((value) => _navigationService.replaceWith(Routes.homeView));
       } else {
         _authService
-            .signUp(_enteredEmail, _enteredPassword)
-            .then((value) => Routes.homeView);
+            .signUp(_enteredEmail.trim(), _enteredPassword.trim())
+            .then((value) => _navigationService.replaceWith(Routes.homeView));
       }
     }
+
+    //Set busy to false if an error occurs
+    setBusy(false);
   }
 }
 

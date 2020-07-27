@@ -13,6 +13,7 @@ class UserAuthenticationView extends HookWidget {
   @override
   Widget build(BuildContext context) {
     //Runtime Variables
+    var size = MediaQuery.of(context).size;
     DynamicSize().init(context);
     bool isKeyboardVisible = (MediaQuery.of(context).viewInsets.bottom >= 150);
 
@@ -44,7 +45,16 @@ class UserAuthenticationView extends HookWidget {
                         "Terms and conditions apply.",
                         style: AppTheme.p2,
                       ),
-                    )
+                    ),
+                    if (viewModel.isBusy)
+                      Align(
+                        alignment: Alignment.center,
+                        child: Container(
+                          width: size.width,
+                          height: size.height,
+                          color: Colors.black.withOpacity(0.3),
+                        ),
+                      )
                   ],
                 ),
               ),

@@ -12,7 +12,10 @@ class HomeView extends StatelessWidget {
     return ViewModelBuilder.reactive(
         builder: (context, viewModel, child) => Scaffold(
               body: Center(
-                child: Text("Home"),
+                child: FlatButton(
+                  child: Text("Sign Out"),
+                  onPressed: viewModel.logout,
+                ),
               ),
             ),
         viewModelBuilder: () => HomeViewModel());

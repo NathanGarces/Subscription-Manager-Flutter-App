@@ -4,6 +4,7 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:sub_manager_app/app/locator.dart';
 import 'package:sub_manager_app/app/router.gr.dart';
+import 'package:sub_manager_app/services/api_exception_handler.dart';
 import 'package:sub_manager_app/services/icon_service.dart';
 import 'package:sub_manager_app/services/user_auth_service.dart';
 import 'package:sub_manager_app/services/validation_service.dart';
@@ -14,6 +15,9 @@ class UserAuthenticationViewModel extends BaseViewModel {
   final IconService _iconService = locator<IconService>();
   final ValidationService _validationService = locator<ValidationService>();
   final UserAuthService _authService = locator<UserAuthService>();
+  final DialogService _dialogService = locator<DialogService>();
+  final ApiExceptionHandler _apiExceptionHandler =
+      locator<ApiExceptionHandler>();
 
   //UI Strings
   String _title = 'SubManager';
@@ -113,19 +117,36 @@ class UserAuthenticationViewModel extends BaseViewModel {
       //Set the currrent modal state to busy
       setBusy(true);
 
-      // TODO: Add error checks.
       if (_authenticationType == AuthenticationType.signin) {
         _authService
             .signIn(_enteredEmail.trim(), _enteredPassword.trim())
-            .then((value) => _navigationService.replaceWith(Routes.homeView));
+            .then((value) => _navigationService.replaceWith(Routes.homeView))
+            .catchError((error) {
+          showDialog(_apiExceptionHandler.userAuthExceptionDescription(error));
+          //Set busy to false if an error occurs
+          setBusy(false);
+          return "";
+        });
       } else {
         _authService
             .signUp(_enteredEmail.trim(), _enteredPassword.trim())
-            .then((value) => _navigationService.replaceWith(Routes.homeView));
+            .then((value) => _navigationService.replaceWith(Routes.homeView))
+            .catchError((error) {
+          showDialog(_apiExceptionHandler.userAuthExceptionDescription(error));
+          return "";
+        });
       }
     }
+  }
 
-    //Set busy to false if an error occurs
+  //Used to show a dialog when an error occurs.
+  Future<void> showDialog(String description) async {
+    await _dialogService.showDialog(
+        title: "An error occured",
+        buttonTitle: "Okay",
+        description: description);
+
+    //Clear busy state since error was thrown
     setBusy(false);
   }
 }

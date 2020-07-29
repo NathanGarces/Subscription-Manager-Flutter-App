@@ -47,12 +47,19 @@ class UserAuthenticationView extends HookWidget {
                       ),
                     ),
                     if (viewModel.isBusy)
-                      Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                          width: size.width,
-                          height: size.height,
-                          color: Colors.black.withOpacity(0.3),
+                      Container(
+                        width: size.width,
+                        height: size.height,
+                        color: Colors.black.withOpacity(0.3),
+                        child: Center(
+                          child: SizedBox(
+                            height: 50 * DynamicSize.widthFactor,
+                            width: 50 * DynamicSize.widthFactor,
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(AppTheme
+                                  .accentColor), //Change the progress indicators color.
+                            ),
+                          ),
                         ),
                       )
                   ],

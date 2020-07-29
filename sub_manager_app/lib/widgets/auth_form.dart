@@ -208,7 +208,12 @@ class _AuthConfirmButton extends ViewModelWidget<UserAuthenticationViewModel> {
         color: AppTheme.accentColor,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(10.0))),
-        onPressed: () {},
+        onPressed: () {
+          //Dismiss the keyboard
+          FocusScope.of(context).unfocus();
+          //Submit the user info
+          viewModel.submitAuthRequest();
+        },
         child: Text(
           text,
           style: AppTheme.h2,

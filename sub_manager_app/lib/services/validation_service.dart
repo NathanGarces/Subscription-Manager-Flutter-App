@@ -21,8 +21,8 @@ class ValidationService {
       return "Please enter a password.";
     }
 
-    if (password.length < 4) {
-      return "Password must contain 4+ characters.";
+    if (password.length < 6) {
+      return "Password must contain 6+ characters.";
     }
 
     return '';

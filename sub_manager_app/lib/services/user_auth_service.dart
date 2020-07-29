@@ -10,18 +10,25 @@ class UserAuthService {
   FirebaseUser _user;
 
   Future<String> signUp(String email, String password) async {
-    print("Params = Email: $email Password: $password");
-    final FirebaseUser user = (await _firebaseAuth
-            .createUserWithEmailAndPassword(email: email, password: password))
-        .user;
-    return user.uid;
+    try {
+      final FirebaseUser user = (await _firebaseAuth
+              .createUserWithEmailAndPassword(email: email, password: password))
+          .user;
+      return user.uid;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<String> signIn(String email, password) async {
-    final FirebaseUser user = (await _firebaseAuth.signInWithEmailAndPassword(
-            email: email, password: password))
-        .user;
-    return user.uid;
+    try {
+      final FirebaseUser user = (await _firebaseAuth.signInWithEmailAndPassword(
+              email: email, password: password))
+          .user;
+      return user.uid;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   //See if already user is logged in or not
